@@ -8,7 +8,7 @@ body {
   list-style: none;
 }
 .paginate ul {
-  padding: 20px;
+  padding: 0px;
 }
 .paginate ul li {
   background: #eee;

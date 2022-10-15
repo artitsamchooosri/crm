@@ -153,6 +153,18 @@ Class Users extends DBConnection {
 		}
 		return json_encode($resp);
 	}
+	public function delete_customer(){
+		extract($_POST);
+		$qry = $this->conn->query("DELETE FROM customers where id = $id");
+		if($qry){
+			$this->settings->set_flashdata('success','User Details successfully deleted.');
+			$resp['status'] = 'success';
+		}else{
+			$resp['status'] = 'error';
+			$resp['error'] = $this->conn->error;
+		}
+		return json_encode($resp);
+	}
 }
 
 $users = new users();
@@ -172,6 +184,9 @@ switch ($action) {
 	break;
 	case 'delete_user':
 		echo $users->delete_user();
+	break;
+	case 'delete_customer':
+		echo $users->delete_customer();
 	break;
 	default:
 		// echo $sysset->index();

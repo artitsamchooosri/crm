@@ -68,10 +68,18 @@ Class Master extends DBConnection {
 						$row['status_badge'] ='badge-dark';
 						break;
 				}
+
 				if(empty($search))
 				$data[] = $row;
-				elseif(strstr(strtolower($row['title']),strtolower($search)) || strstr(strtolower($row['description']),strtolower($search)))
-				$data[] = $row;
+				else{
+					$search_cut = explode(" ", $search);
+					foreach ($search_cut as $value) {
+						if(strstr(strtolower($row['title']),strtolower($value)) || strstr(strtolower($row['description']),strtolower($value))){
+							$data[] = $row;
+							break;
+						}
+					}
+				}
 				 
 			}	
 

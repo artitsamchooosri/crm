@@ -79,8 +79,6 @@
 	                      '<span class="sr-only">Toggle Dropdown</span>'+
 	                    '</button>'+
 	                    '<div class="dropdown-menu" role="menu" style="">'+
-	                    //   '<a class="dropdown-item text-primary edit_data" data-id="'+(data[k].id)+'" href="javascript:void(0)"><span class="fa fa-edit"></span> Edit</a>'+
-	                    //   '<div class="dropdown-divider"></div>'+
 	                      '<a class="dropdown-item text-danger delete_data" data-id="'+(data[k].id)+'" href="javascript:void(0)"><span class="fa fa-trash text-fanger"></span> Delete</a>'+
 	                   ' </div>'+
 	                  '</div></td>')
@@ -114,7 +112,7 @@
 	function delete_data($id){
 		start_loader();
 		$.ajax({
-			url:_base_url_+"classes/Users.php?f=delete_user",
+			url:_base_url_+"classes/Users.php?f=delete_customer",
 			method:'POST',
 			data:{id:$id},
 			dataType:'json',

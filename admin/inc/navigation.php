@@ -37,7 +37,7 @@
                         </p>
                       </a>
                     </li> 
-                    <li class="nav-header">Services</li>
+                    <!-- <li class="nav-header">Services</li>
                     <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin?page=services&view=category" class="nav-link nav-category">
                         <i class="nav-icon fas fa-th-list"></i>
@@ -62,7 +62,7 @@
                           Quote Requests
                         </p>
                       </a>
-                    </li>
+                    </li> -->
 
                     <li class="nav-header">Ticket</li>
                     <li class="nav-item dropdown">
@@ -81,6 +81,24 @@
                         </p>
                       </a>
                     </li>
+                    <li class="nav-header">Informa</li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=ticket&view=create_ticket" class="nav-link nav-create_ticket">
+                        <i class="nav-icon fas fa-ticket-alt"></i>
+                        <p>
+                          Create Problem Topic
+                        </p>
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=ticket&view=ticket_list" class="nav-link nav-ticket_list">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>
+                          Problem List
+                        </p>
+                      </a>
+                    </li>
+
                     <li class="nav-header">Maintenance</li>
                     <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin/?page=user/user_list" class="nav-link nav-user_list">
