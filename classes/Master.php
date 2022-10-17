@@ -53,7 +53,7 @@ Class Master extends DBConnection {
 							$row['user_avatar'] = validate_image($user->fetch_array()['avatar']);
 					}
 				}
-				$row['date_created'] = date("Y-m-d h:i A",strtotime($row['date_created']));
+				$row['date_created'] = date("Y-m-d h:i",strtotime($row['date_created']));
 				switch ($row['status']) {
 					case 1:
 						$row['status'] ='On-Going';

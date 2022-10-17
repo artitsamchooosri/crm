@@ -3,33 +3,41 @@
 <hr>
 <style>
 	.ticket-user {
-		height: 100px;
-		width: 100px;
+		max-height: 50px;
+		max-width: 50px;
 		object-fit: cover;
 		border-radius: 50%;
 		border: 1px solid;
 	}
 
-	.list-wrapper {
-		width: 90%;
-		max-width: 400px;
-		margin: 30px auto;
+	.card-body {
+		padding: 5px;
+		margin: 0px;
 	}
 
+	.ticket-list {
+		padding: 5px;
+		margin: 0px;
+	}
+
+	.paginate ul {
+		padding: 5px;
+		margin: 0px;
+	}
 
 	/* List component */
 	.list {
-		background-color: #FFF;
+		width: 100%;
+		background-color: #74992E00;
 		list-style: none;
 		margin: 0;
-		padding: 15px;
+		padding: 0px;
 		border-radius: 2px;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 	}
 
 	.list .list-item {
 		display: flex;
-		padding: 10px 5px;
+		padding: 5px;
 	}
 
 	.list .list-item:not(:last-child) {
@@ -51,7 +59,8 @@
 	/*list item content*/
 	.list .list-item__content {
 		flex-grow: 1;
-		padding: 0 20px;
+		flex-flow: column;
+		padding: 5px;
 	}
 
 	.list .list-item__content h4 {
@@ -64,6 +73,20 @@
 		margin-top: 5px;
 		color: #AAA;
 		margin-bottom: 0;
+	}
+
+	.list .list-item__content span {
+
+		max-width: 200px;
+		margin-right: auto;
+	}
+
+	.list .list-item__action {
+		flex-shrink: 0;
+		justify-content: flex-end;
+		flex-direction: row-reverse;
+		max-height: 50px;
+
 	}
 </style>
 <div class="row">
@@ -85,8 +108,8 @@
 							</div>
 						</div>
 					</form>
-					<div class="paginate" id="paginate-list">
-						<ul id="ticket-list list"></ul>
+					<div class="paginate list" id="paginate-list">
+						<ul id="ticket-list"></ul>
 					</div>
 				</div>
 			</div>
@@ -96,57 +119,34 @@
 <div id="ticket_clone" class="d-none">
 	<li class="list-item">
 		<div class="list-item list-item__image">
-			<img src="images/image.png" alt="Image">
+			<img class="image-thubnail ticket-user border-info" src="<?php echo validate_image($_settings->info('logo')) ?>" alt="">
 		</div>
 		<div class="list-item list-item__content">
-			<h4> Name Surname </h4>
-			<p> Info </p>
+			<h4 class="ticket-title search"></h4>
+			<small class="ticket-service search"></small>
+			<hr>
+			<p class='truncate ticket-description'></p>
+			<hr>
+			<span class="float-right"><span><i>Status</i>:</span> <span class="badge ticket-status"></span></span>
+			<span class="float-right"><span><i>Date Created</i>:</span> <span class="badge badge-light ticket-created"></span></span>
 		</div>
-	</li>
-</div>
-<div id="ticket_clones" class="d-none">
-	<li>
-		<div class="callout ticket-item callout-info m-2">
-			<table width="100%">
-				<colgroup>
-					<col width="15%">
-					<col width="70%">
-					<col width="15%">
-				</colgroup>
-				<tr>
-					<td width="15%">
-						<img class="image-thubnail ticket-user border-info" src="<?php echo validate_image($_settings->info('logo')) ?>" alt="">
-					</td>
-					<td width="70%">
-						<h4 class="ticket-title search"></h4>
-						<small class="ticket-service search"></small>
-						<hr>
-						<p class='truncate ticket-description'></p>
-						<hr>
-						<span><i>Status</i>:</span> <span class="badge ticket-status"></span>
-						<span class="float-right"><span><i>Date Created</i>:</span> <span class="badge badge-light ticket-created"></span></span>
-					</td>
-					<td class="text-center" width="15%">
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-								Action &nbsp;
-								<span class="sr-only">Toggle Dropdown</span>
-							</button>
-							<div class="dropdown-menu" role="menu" style="">
-								<a class="dropdown-item text-primary view_data" data-id="" href="javascript:void(0)"><span class="fa fa-eye"></span> View</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item text-primary edit_data" data-id="" href="javascript:void(0)"><span class="fa fa-edit"></span> Edit</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item text-danger delete_data" data-id="" href="javascript:void(0)"><span class="fa fa-trash text-fanger"></span> Delete</a>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-	</li>
-</div>
+		<div class="list-item list-item__action">
+			<div class="btn-group">
+				<button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+					Action
 
+				</button>
+				<div class="dropdown-menu" role="menu" style="">
+					<a class="dropdown-item text-primary view_data" data-id="" href="javascript:void(0)"><span class="fa fa-eye"></span> View</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item text-primary edit_data" data-id="" href="javascript:void(0)"><span class="fa fa-edit"></span> Edit</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item text-danger delete_data" data-id="" href="javascript:void(0)"><span class="fa fa-trash text-fanger"></span> Delete</a>
+				</div>
+			</div>
+		</div>
+	</li>
+</div>
 <script>
 	function load_data($search = '<?php echo isset($_GET['keyword']) ? $_GET['keyword'] : '' ?>') {
 		start_loader();
@@ -184,7 +184,7 @@
 							if (!!data[k].status_badge)
 								item.find('.ticket-status').addClass(data[k].status_badge);
 							if (!!data[k].date_created)
-								item.find('.ticket-created').addClass(data[k].date_created);
+								item.find('.ticket-created').html(data[k].date_created);
 							if (!!data[k].id)
 								item.find('.edit_data, .delete_data, .view_data').attr('data-id', data[k].id);
 							item.attr('data-id', data[k].id);
