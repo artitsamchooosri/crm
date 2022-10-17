@@ -1,5 +1,5 @@
 <br>
-<h5 class="">Tickets</h5>
+<h5 class="">Problem</h5>
 <hr>
 <style>
 	.ticket-user {
@@ -93,9 +93,9 @@
 	<div class="container-fluid">
 		<div class="card card-outline card-primary">
 			<div class="card-header">
-				<h5 class="card-title">List of Tickets</h5>
+				<h5 class="card-title">List of Problem</h5>
 				<div class="card-tools">
-					<a class="btn btn-flat btn-primary btn-sm" type="button" href="<?php echo base_url ?>admin/?page=ticket&view=create_ticket"><span class="fa fa-plus"></span> New Ticket</a>
+					<a class="btn btn-flat btn-primary btn-sm" type="button" href="<?php echo base_url ?>admin/?page=ticket&view=create_ticket"><span class="fa fa-plus"></span> New Problem</a>
 				</div>
 			</div>
 			<div class="card-body">

@@ -64,7 +64,7 @@
                       </a>
                     </li> -->
 
-                    <li class="nav-header">Ticket</li>
+                    <!-- <li class="nav-header">Ticket</li>
                     <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin/?page=ticket&view=create_ticket" class="nav-link nav-create_ticket">
                         <i class="nav-icon fas fa-ticket-alt"></i>
@@ -80,7 +80,7 @@
                           Ticket List
                         </p>
                       </a>
-                    </li>
+                    </li> -->
                     <li class="nav-header">Informa</li>
                     <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin/?page=ticket&view=create_ticket" class="nav-link nav-create_ticket">
