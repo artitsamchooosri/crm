@@ -85,6 +85,7 @@ if(isset($_GET['id'])){
 	            [ 'color', [ 'color' ] ],
 	            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
 	            [ 'table', [ 'table' ] ],
+				['insert', ['link', 'unlink', 'picture', 'video', 'hr']],
 	            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
 	        ]
 	    })
