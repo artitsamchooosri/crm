@@ -1,416 +1,432 @@
-<?
+<?php
 require_once('../config.php');
-Class Master extends DBConnection {
+class Master extends DBConnection
+{
 	private $settings;
-	public function __construct(){
+	public function __construct()
+	{
 		global $_settings;
 		$this->settings = $_settings;
 		parent::__construct();
 	}
-	public function __destruct(){
+	public function __destruct()
+	{
 		parent::__destruct();
 	}
-	public function load_service_category(){
-		
+	public function load_service_category()
+	{
+
 		$qry = $this->conn->query("SELECT * FROM `services_category` order by `category` asc");
 		$data = array();
-			while($row = $qry->fetch_assoc()){
-				$row['description'] = strip_tags(stripslashes($row['description']));
-				
-				$data[] = $row;
-			}	
-			$resp['status']='success';
-			$resp['data'] = $data;
-			return json_encode($resp);
+		while ($row = $qry->fetch_assoc()) {
+			$row['description'] = strip_tags(stripslashes($row['description']));
+
+			$data[] = $row;
+		}
+		$resp['status'] = 'success';
+		$resp['data'] = $data;
+		return json_encode($resp);
 	}
-	public function load_category_problem(){
-		
+	public function load_category_problem()
+	{
+
 		$qry = $this->conn->query("SELECT * FROM `category_problem` order by `category` asc");
 		$data = array();
-			while($row = $qry->fetch_assoc()){
-				$row['description'] = strip_tags(stripslashes($row['description']));
-				
-				$data[] = $row;
-			}	
-			$resp['status']='success';
-			$resp['data'] = $data;
-			return json_encode($resp);
+		while ($row = $qry->fetch_assoc()) {
+			$row['description'] = strip_tags(stripslashes($row['description']));
+
+			$data[] = $row;
+		}
+		$resp['status'] = 'success';
+		$resp['data'] = $data;
+		return json_encode($resp);
 	}
-	public function load_service(){
-		
+	public function load_service()
+	{
+
 		$qry = $this->conn->query("SELECT s.*,c.category FROM `services` s inner join `services_category` c on c.id = s.category_id order by s.`service` asc");
 		$data = array();
-			while($row = $qry->fetch_assoc()){
-				$row['description'] = strip_tags(stripslashes($row['description']));
-				$row['img_path'] = validate_image($row['img_path']);
-				$data[] = $row;
-			}	
-			$resp['status']='success';
-			$resp['data'] = $data;
-			return json_encode($resp);
+		while ($row = $qry->fetch_assoc()) {
+			$row['description'] = strip_tags(stripslashes($row['description']));
+			$row['img_path'] = validate_image($row['img_path']);
+			$data[] = $row;
+		}
+		$resp['status'] = 'success';
+		$resp['data'] = $data;
+		return json_encode($resp);
 	}
-	public function load_tickets(){
+	public function load_tickets()
+	{
 		extract($_POST);
 		$qry = $this->conn->query("SELECT t.*,s.category as section,c.category FROM `tickets` t inner join `services_category` s on t.section_id = s.id inner join `category_problem` c on c.id = t.category_id  order by date(date_created) desc");
 		$data = array();
-			while($row = $qry->fetch_assoc()){
-				$row['description'] = strip_tags(stripslashes($row['description']));
-				if($row['user_id'] > 0){
-					if($row['user_created'] == 'admin'){
-						$user= $this->conn->query("SELECT * FROM users where id =".$row['user_id']);
-						if($user->num_rows > 0)
-							$row['user_avatar'] = validate_image($user->fetch_array()['avatar']);
-					}else{
-						$user= $this->conn->query("SELECT * FROM customers where id =".$row['user_id']);
-						if($user->num_rows > 0)
-							$row['user_avatar'] = validate_image($user->fetch_array()['avatar']);
-					}
+		while ($row = $qry->fetch_assoc()) {
+			$row['description'] = strip_tags(stripslashes($row['description']));
+			if ($row['user_id'] > 0) {
+				if ($row['user_created'] == 'admin') {
+					$user = $this->conn->query("SELECT * FROM users where id =" . $row['user_id']);
+					if ($user->num_rows > 0)
+						$row['user_avatar'] = validate_image($user->fetch_array()['avatar']);
+				} else {
+					$user = $this->conn->query("SELECT * FROM customers where id =" . $row['user_id']);
+					if ($user->num_rows > 0)
+						$row['user_avatar'] = validate_image($user->fetch_array()['avatar']);
 				}
-				$row['date_created'] = date("Y-m-d h:i",strtotime($row['date_created']));
-				$row['section_badge'] ='badge-info';
-				$row['category_badge'] ='badge-success';
+			}
+			$row['date_created'] = date("Y-m-d h:i", strtotime($row['date_created']));
+			$row['section_badge'] = 'badge-info';
+			$row['category_badge'] = 'badge-success';
 
-				if(empty($search))
+			if (empty($search))
 				$data[] = $row;
-				else{
-					$search_cut = explode(" ", $search);
-					foreach ($search_cut as $value) {
-						if(strstr(strtolower($row['title']),strtolower($value)) || strstr(strtolower($row['description']),strtolower($value))){
-							$data[] = $row;
-							break;
-						}
+			else {
+				$search_cut = explode(" ", $search);
+				foreach ($search_cut as $value) {
+					if (strstr(strtolower($row['title']), strtolower($value)) || strstr(strtolower($row['description']), strtolower($value))) {
+						$data[] = $row;
+						break;
 					}
 				}
-				 
-			}	
+			}
+		}
 
-			$resp['status']='success';
-			$resp['data'] = $data;
-			$json = json_encode($resp);
+		$resp['status'] = 'success';
+		$resp['data'] = $data;
+		$json = json_encode($resp);
 
-			if ($json)
-				return $json;
-			else
-				return json_last_error_msg();
+		if ($json)
+			return $json;
+		else
+			return json_last_error_msg();
 	}
-	public function load_comments(){
+	public function load_comments()
+	{
 		extract($_POST);
 		$qry = $this->conn->query("SELECT * FROM `ticket_comment` where ticket_id = {$id} order by date(date_created) desc");
 		$data = array();
-			while($row = $qry->fetch_assoc()){
-				$row['comment'] = strip_tags(stripslashes($row['comment']));
-				$row['user_name'] = "Developer";
-				$row['login_type'] = 1;
-				if($row['user_id'] > 0){
-					if($row['user_created'] == 'admin'){
-						$user= $this->conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id =".$row['user_id']);
-						if($user->num_rows > 0){
-							$res =$user->fetch_array();
-							$row['user_avatar'] = validate_image($res['avatar']);
-							$row['user_name'] = ucwords($res['name']);
-						}
-							
-					}else{
-						$user= $this->conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM customers where id =".$row['user_id']);
-						if($user->num_rows > 0){
-							$res =$user->fetch_array();
-							$row['user_avatar'] = validate_image($res['avatar']);
-							$row['user_name'] = ucwords($res['name']);
-							$row['login_type'] = 2;
-						}
+		while ($row = $qry->fetch_assoc()) {
+			$row['comment'] = strip_tags(stripslashes($row['comment']));
+			$row['user_name'] = "Developer";
+			$row['login_type'] = 1;
+			if ($row['user_id'] > 0) {
+				if ($row['user_created'] == 'admin') {
+					$user = $this->conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM users where id =" . $row['user_id']);
+					if ($user->num_rows > 0) {
+						$res = $user->fetch_array();
+						$row['user_avatar'] = validate_image($res['avatar']);
+						$row['user_name'] = ucwords($res['name']);
+					}
+				} else {
+					$user = $this->conn->query("SELECT *,concat(firstname,' ',lastname) as name FROM customers where id =" . $row['user_id']);
+					if ($user->num_rows > 0) {
+						$res = $user->fetch_array();
+						$row['user_avatar'] = validate_image($res['avatar']);
+						$row['user_name'] = ucwords($res['name']);
+						$row['login_type'] = 2;
+					}
 				}
-				}
-				$row['date_created'] = date("Y-m-d h:i A",strtotime($row['date_created']));
-				$data[] = $row;
-			}	
+			}
+			$row['date_created'] = date("Y-m-d h:i A", strtotime($row['date_created']));
+			$data[] = $row;
+		}
 
-			$resp['status']='success';
-			$resp['data'] = $data;
-			return json_encode($resp);
-
+		$resp['status'] = 'success';
+		$resp['data'] = $data;
+		return json_encode($resp);
 	}
-	function save_category(){
+	function save_category()
+	{
 		extract($_POST);
 		$data = "";
-		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id'))){
-				if($k == 'description') $v = addslashes($v);
-				if(!empty($data)) $data .= " , ";
+		foreach ($_POST as $k => $v) {
+			if (!in_array($k, array('id'))) {
+				if ($k == 'description') $v = addslashes($v);
+				if (!empty($data)) $data .= " , ";
 				$data .= " {$k} = '{$v}' ";
 			}
 		}
-		$chk = $this->conn->query("SELECT * FROM `services_category` where category = '{$category}' ".(!empty($id) ? " and id != {$id}" : ""));
-		if($chk->num_rows > 0){
+		$chk = $this->conn->query("SELECT * FROM `services_category` where category = '{$category}' " . (!empty($id) ? " and id != {$id}" : ""));
+		if ($chk->num_rows > 0) {
 			$resp['status'] = 'duplicate';
 		}
-		if(empty($id)){
+		if (empty($id)) {
 			$sql = "INSERT INTO `services_category` set $data ";
-		}else{
+		} else {
 			$sql = "UPDATE `services_category` set $data where id = {$id}";
 		}
 		$save = $this->conn->query($sql);
-		if($save){
+		if ($save) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['error'] = 'error';
 			$resp['data'] = $sql;
 		}
 		return json_encode($resp);
-
 	}
-	function save_category_problem(){
+	function save_category_problem()
+	{
 		extract($_POST);
 		$data = "";
-		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id'))){
-				if($k == 'description') $v = addslashes($v);
-				if(!empty($data)) $data .= " , ";
+		foreach ($_POST as $k => $v) {
+			if (!in_array($k, array('id'))) {
+				if ($k == 'description') $v = addslashes($v);
+				if (!empty($data)) $data .= " , ";
 				$data .= " {$k} = '{$v}' ";
 			}
 		}
-		$chk = $this->conn->query("SELECT * FROM `category_problem` where category = '{$category}' ".(!empty($id) ? " and id != {$id}" : ""));
-		if($chk->num_rows > 0){
+		$chk = $this->conn->query("SELECT * FROM `category_problem` where category = '{$category}' " . (!empty($id) ? " and id != {$id}" : ""));
+		if ($chk->num_rows > 0) {
 			$resp['status'] = 'duplicate';
 		}
-		if(empty($id)){
+		if (empty($id)) {
 			$sql = "INSERT INTO `category_problem` set $data ";
-		}else{
+		} else {
 			$sql = "UPDATE `category_problem` set $data where id = {$id}";
 		}
 		$save = $this->conn->query($sql);
-		if($save){
+		if ($save) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['error'] = 'error';
 			$resp['data'] = $sql;
 		}
 		return json_encode($resp);
-
 	}
-	function delete_service_category(){
+	function delete_service_category()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `services_category` where id ='$id' ");
 		$delete2 = $this->conn->query("DELETE FROM `services` where category_id ='$id' ");
-		if($delete && $delete2){
+		if ($delete && $delete2) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function delete_category_problem(){
+	function delete_category_problem()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `category_problem` where id ='$id' ");
-		if($delete){
+		if ($delete) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function save_service(){
+	function save_service()
+	{
 		extract($_POST);
 		$data = "";
-		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id'))){
-				if($k == 'description') $v = addslashes($v);
-				if(!empty($data)) $data .= " , ";
+		foreach ($_POST as $k => $v) {
+			if (!in_array($k, array('id'))) {
+				if ($k == 'description') $v = addslashes($v);
+				if (!empty($data)) $data .= " , ";
 				$data .= " {$k} = '{$v}' ";
 			}
 		}
-		$chk = $this->conn->query("SELECT * FROM `services` where service = '{$service}' ".(!empty($id) ? " and id != {$id}" : "")) or die($this->conn->error);
-		if($chk->num_rows > 0){
+		$chk = $this->conn->query("SELECT * FROM `services` where service = '{$service}' " . (!empty($id) ? " and id != {$id}" : "")) or die($this->conn->error);
+		if ($chk->num_rows > 0) {
 			$resp['status'] = 'duplicate';
 		}
 
-		if(empty($id)){
+		if (empty($id)) {
 			$sql = "INSERT INTO `services` set $data ";
-		}else{
+		} else {
 			$sql = "UPDATE `services` set $data where id = {$id}";
 		}
 		$save = $this->conn->query($sql);
-		if($save){
+		if ($save) {
 			$resp['status'] = 'success';
-			$id= !empty($id) ? $id : $this->conn->insert_id;
-			if(!is_dir(base_app.'uploads/services')) mkdir(base_app.'uploads/services');
-			if(!empty($_FILES['img']['tmp_name'])){
+			$id = !empty($id) ? $id : $this->conn->insert_id;
+			if (!is_dir(base_app . 'uploads/services')) mkdir(base_app . 'uploads/services');
+			if (!empty($_FILES['img']['tmp_name'])) {
 				$file = pathinfo($_FILES["img"]["name"]);
-				$fname = $id.'_img.'.($file['extension']);
-				if(is_file(base_app.'uploads/services/'.$fname)){
-					unlink(base_app.'uploads/services/'.$fname);
+				$fname = $id . '_img.' . ($file['extension']);
+				if (is_file(base_app . 'uploads/services/' . $fname)) {
+					unlink(base_app . 'uploads/services/' . $fname);
 				}
-				$move = move_uploaded_file($_FILES["img"]["tmp_name"], base_app.'uploads/services/'.$fname);
-				if($move){
+				$move = move_uploaded_file($_FILES["img"]["tmp_name"], base_app . 'uploads/services/' . $fname);
+				if ($move) {
 					$data = " img_path = 'uploads/services/{$fname}' ";
 					$this->conn->query("UPDATE `services` set {$data} where id = $id ");
-				}else{
-					var_dump($move);exit;
+				} else {
+					var_dump($move);
+					exit;
 				}
 			}
-		}else{
+		} else {
 			$resp['error'] = 'error';
 			$resp['data'] = $sql;
 		}
 		return json_encode($resp);
-
 	}
-	function delete_service(){
+	function delete_service()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `services` where `id` ='$id' ");
-		if($delete){
+		if ($delete) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function delete_ticket(){
+	function delete_ticket()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `tickets` where `id` ='$id' ");
-		if($delete){
+		if ($delete) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Ticket Succesfully deleted');
-		}else{
+			$this->settings->set_flashdata('success', ' Ticket Succesfully deleted');
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function save_ticket(){
+	function save_ticket()
+	{
 		extract($_POST);
 		$data = "";
 
-		foreach($_POST as $k => $v){
-			if(!in_array($k, array('id'))){
-				if($k == 'description') $v = addslashes($v);
-				if(!empty($data)) $data .= " , ";
+		foreach ($_POST as $k => $v) {
+			if (!in_array($k, array('id'))) {
+				if ($k == 'description') $v = addslashes($v);
+				if (!empty($data)) $data .= " , ";
 				$data .= " {$k} = '{$v}' ";
 			}
 		}
-		$data .= ", user_id = '".$this->settings->userdata('id')."' ";
+		$data .= ", user_id = '" . $this->settings->userdata('id') . "' ";
 
-		if($this->settings->userdata('id') == -1){
-				$data .= ", user_created = 'developer' ";
-		}else if($this->settings->userdata('login_type') == 1 ){
-				$data .= ", user_created = 'admin' ";
-		}else{
-				$data .= ", user_created = 'user' ";
+		if ($this->settings->userdata('id') == -1) {
+			$data .= ", user_created = 'developer' ";
+		} else if ($this->settings->userdata('login_type') == 1) {
+			$data .= ", user_created = 'admin' ";
+		} else {
+			$data .= ", user_created = 'user' ";
 		}
 
-		if(empty($id)){
+		if (empty($id)) {
 			$sql = "INSERT INTO `tickets` set $data ";
-		}else{
+		} else {
 			$sql = "UPDATE `tickets` set $data where id = {$id}";
 		}
 		$save = $this->conn->query($sql);
-		if($save){
+		if ($save) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Ticket successfully saved');
-		}else{
+			$this->settings->set_flashdata('success', ' Ticket successfully saved');
+		} else {
 			$resp['error'] = 'error';
 			$resp['data'] = $sql;
 		}
 		return json_encode($resp);
 	}
-	function save_comment(){
+	function save_comment()
+	{
 		extract($_POST);
 		$comment = addslashes($comment);
 
 		$data = " comment = '{$comment}'";
-		$data .= ", user_id = '".$this->settings->userdata('id')."' ";
+		$data .= ", user_id = '" . $this->settings->userdata('id') . "' ";
 
-		if($this->settings->userdata('id') == -1){
-				$data .= ", user_created = 'developer' ";
-		}else if($this->settings->userdata('login_type') == 1 ){
-				$data .= ", user_created = 'admin' ";
-		}else{
-				$data .= ", user_created = 'user' ";
+		if ($this->settings->userdata('id') == -1) {
+			$data .= ", user_created = 'developer' ";
+		} else if ($this->settings->userdata('login_type') == 1) {
+			$data .= ", user_created = 'admin' ";
+		} else {
+			$data .= ", user_created = 'user' ";
 		}
 		$data .= ", ticket_id = '{$ticket_id}' ";
 
-			$sql = "INSERT INTO `ticket_comment` set $data ";
+		$sql = "INSERT INTO `ticket_comment` set $data ";
 		$save = $this->conn->query($sql);
-		if($save){
+		if ($save) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Comment Succesfully posted');
-		}else{
+			$this->settings->set_flashdata('success', ' Comment Succesfully posted');
+		} else {
 			$resp['error'] = 'error';
 			$resp['data'] = $sql;
 		}
 		return json_encode($resp);
 	}
-	function delete_comment(){
+	function delete_comment()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `ticket_comment` where `id` ='$id' ");
-		if($delete){
+		if ($delete) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Comment Succesfully deleted');
-		}else{
+			$this->settings->set_flashdata('success', ' Comment Succesfully deleted');
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function save_quote(){
+	function save_quote()
+	{
 		extract($_POST);
 		$data = " email = '$email' ";
-		$service_ids = implode(',',$service);
+		$service_ids = implode(',', $service);
 		$data .= " , service_ids = '{$service_ids}' ";
 		$sql = "INSERT INTO `quote` set $data ";
-		if($this->conn->query($sql)){
+		if ($this->conn->query($sql)) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Request sent');
-		}else{
+			$this->settings->set_flashdata('success', ' Request sent');
+		} else {
 			$resp['status'] = 'error';
-			$resp['error'] = $this->conn->error .' : '.$sql;
+			$resp['error'] = $this->conn->error . ' : ' . $sql;
 		}
 		return json_encode($resp);
 	}
-	function load_quote(){
+	function load_quote()
+	{
 		$qry = $this->conn->query("SELECT * from `quote` order by date(date_created) desc");
-		$data =array();
-		if($qry){
-			while($row = $qry->fetch_assoc()){
-				$services='';
+		$data = array();
+		if ($qry) {
+			while ($row = $qry->fetch_assoc()) {
+				$services = '';
 				$qry2 = $this->conn->query("SELECT * from `services` where id in ({$row['service_ids']}) ");
-				while($ser = $qry2->fetch_assoc()){
-					if(!empty($services)) $services .= ", ";
+				while ($ser = $qry2->fetch_assoc()) {
+					if (!empty($services)) $services .= ", ";
 					$services .= $ser['service'];
 				}
 				$row['services'] = $services;
-				$row['date_created'] = date('Y-m-d h:i A',strtotime($row['date_created']));
+				$row['date_created'] = date('Y-m-d h:i A', strtotime($row['date_created']));
 				$data[] = $row;
 			}
 			$resp['status'] = 'success';
 			$resp['data'] = $data;
-
-		}else{
+		} else {
 			$resp['status'] = 'error';
-			$resp['error'] = $this->conn->error .' : ';
+			$resp['error'] = $this->conn->error . ' : ';
 		}
 		return json_encode($resp);
 	}
-	function delete_quote(){
+	function delete_quote()
+	{
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `quote` where `id` ='$id' ");
-		if($delete){
+		if ($delete) {
 			$resp['status'] = 'success';
-		}else{
+		} else {
 			$resp['status'] = 'error';
 			$resp['error'] = $this->conn->error;
 		}
 		return json_encode($resp);
 	}
-	function ticket_update_status(){
+	function ticket_update_status()
+	{
 		extract($_POST);
 		$sql = "UPDATE `tickets` set status = {$status} where id = {$id}";
-		if($this->conn->query($sql)){
+		if ($this->conn->query($sql)) {
 			$resp['status'] = 'success';
-			$this->settings->set_flashdata('success',' Ticket\'s successfully updated.');
-		}else{
+			$this->settings->set_flashdata('success', ' Ticket\'s successfully updated.');
+		} else {
 			$resp['status'] = 'error';
 			$resp['sql'] = $sql;
 		}
@@ -424,65 +440,65 @@ $sysset = new SystemSettings();
 switch ($action) {
 	case 'load_service_category':
 		echo $Master->load_service_category();
-	break;
+		break;
 	case 'load_category_problem':
 		echo $Master->load_category_problem();
-	break;
+		break;
 	case 'load_service':
 		echo $Master->load_service();
-	break;
+		break;
 	case 'load_tickets':
 		echo $Master->load_tickets();
-	break;
+		break;
 	case 'save_category':
 		echo $Master->save_category();
-	break;
+		break;
 	case 'save_category_problem':
 		echo $Master->save_category_problem();
-	break;
-	
+		break;
+
 	case 'delete_service_category':
 		echo $Master->delete_service_category();
-	break;
+		break;
 	case 'delete_category_problem':
 		echo $Master->delete_category_problem();
-	break;
+		break;
 
 	case 'save_service':
 		echo $Master->save_service();
-	break;
+		break;
 	case 'delete_service':
 		echo $Master->delete_service();
-	break;
+		break;
 	case 'save_ticket':
 		echo $Master->save_ticket();
-	break;
+		break;
 	case 'save_comment':
 		echo $Master->save_comment();
-	break;
+		break;
 	case 'load_comments':
 		echo $Master->load_comments();
-	break;
+		break;
 	case 'delete_comment':
 		echo $Master->delete_comment();
-	break;
+		break;
 	case 'delete_ticket':
 		echo $Master->delete_ticket();
-	break;
+		break;
 	case 'save_quote':
 		echo $Master->save_quote();
-	break;
+		break;
 	case 'load_quote':
 		echo $Master->load_quote();
-	break;
+		break;
 	case 'delete_quote':
 		echo $Master->delete_quote();
-	break;
+		break;
 	case 'ticket_update_status':
 		echo $Master->ticket_update_status();
-	break;
+		break;
 
 	default:
-	// echo $sysset->index();
-	break;
+		// echo $sysset->index();
+		break;
 }
