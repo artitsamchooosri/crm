@@ -21,7 +21,7 @@ if(isset($_GET['id'])){
 	<form action="" id="manage-service">
 		<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] :'' ?>">
 		<div class="form-group">
-			<label for="category_id" class="control-label">Category</label>
+			<label for="category_id" class="control-label">Section</label>
 			<select class="custom-select custom-select-sm select2" name="category_id" id="category_id" required>
 				<option value="" readonly></option>
 				<?php 
@@ -33,7 +33,7 @@ if(isset($_GET['id'])){
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="service" class="control-label">Services</label>
+			<label for="service" class="control-label">Section</label>
 			<input type="text" class="form-control form-control-sm" name="service" id="service" value="<?php echo isset($service) ? $service : "" ?>" required>
 		</div>
 		<div class="form-group">

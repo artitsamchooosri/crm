@@ -1,13 +1,13 @@
 <br>
-<h5 class="">Service Category</h5>
+<h5 class="">Category Problem</h5>
 <hr>
 <div class="row">
 	<div class="container-fluid">
 		<div class="card card-outline card-primary">
 			<div class="card-header">
-				<h5 class="card-title">List of Service Category</h5>
+				<h5 class="card-title">List of Category Problem</h5>
 				<div class="card-tools">
-					<button class="btn btn-flat btn-primary btn-sm" type="button" id="new_data"><span class="fa fa-plus"></span> New Category</button>
+					<button class="btn btn-flat btn-primary btn-sm" type="button" id="new_data"><span class="fa fa-plus"></span> New Category Problem</button>
 				</div>
 			</div>
 			<div class="card-body">
@@ -43,7 +43,7 @@
 			$('table tbody').html('')
 		}
 		$.ajax({
-			url:_base_url_+"classes/Master.php?f=load_service_category",
+			url:_base_url_+"classes/Master.php?f=load_category_problem",
 			dataType: "json",
 			error: err=>{
 				console.log(err)
@@ -93,7 +93,7 @@
 
 	function data_func(){
 		$('.edit_data').click(function(){
-			uni_modal('<span class="fa fa-edit text-primary"></span> Edit Service Category',_base_url_+'admin/services/manage_category.php?id='+$(this).attr('data-id'))
+			uni_modal('<span class="fa fa-edit text-primary"></span> Edit Service Category',_base_url_+'admin/services/manage_category_problem.php?id='+$(this).attr('data-id'))
 		})
 		$('.delete_data').click(function(){
 			_conf('Are you sure to delete this data?','delete_data',[$(this).attr('data-id')]);
@@ -102,7 +102,7 @@
 	function delete_data($id){
 		start_loader();
 		$.ajax({
-			url:_base_url_+"classes/Master.php?f=delete_service_category",
+			url:_base_url_+"classes/Master.php?f=delete_category_problem",
 			method:'POST',
 			data:{id:$id},
 			dataType:'json',
@@ -124,7 +124,7 @@
 	$(document).ready(function(){
 		load_data()
 		$('#new_data').click(function(){
-			uni_modal('<span class="fa fa-plus"></span> Create New Service Category',_base_url_+'admin/services/manage_category.php')
+			uni_modal('<span class="fa fa-plus"></span> Create New Category Problem',_base_url_+'admin/services/manage_category_problem.php')
 		})
 	})
 </script>

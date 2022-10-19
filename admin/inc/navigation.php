@@ -37,25 +37,33 @@
                         </p>
                       </a>
                     </li> 
-                    <!-- <li class="nav-header">Services</li>
+                    <li class="nav-header">Services</li>
                     <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>admin?page=services&view=category" class="nav-link nav-category">
+                      <a href="<?php echo base_url ?>admin?page=services&view=section" class="nav-link nav-category">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p>
-                          Category
+                          Section
                         </p>
                       </a>
                     </li>
                     <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin?page=services&view=category_problem" class="nav-link nav-category">
+                        <i class="nav-icon fas fa-th-list"></i>
+                        <p>
+                          Category Problem
+                        </p>
+                      </a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin?page=services&view=service_list" class="nav-link nav-service_list">
                         <i class="nav-icon fas fa-list-ul"></i>
                         <p>
                           Services List
                         </p>
                       </a>
-                    </li>
+                    </li> -->
 
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>admin?page=quote" class="nav-link nav-quote">
                         <i class="nav-icon fas fa-file"></i>
                         <p>

@@ -28,7 +28,7 @@
 	/* List component */
 	.list {
 		width: 100%;
-		background-color: #74992E00;
+		
 		list-style: none;
 		margin: 0;
 		padding: 0px;
@@ -127,7 +127,8 @@
 			<hr>
 			<p class='truncate ticket-description'></p>
 			<hr>
-			<span class="float-right"><span><i>Status</i>:</span> <span class="badge ticket-status"></span></span>
+			<span class="float-right"><span><i>Section</i>:</span> <span class="badge section-status"></span></span>
+			<span class="float-right"><span><i>Category</i>:</span> <span class="badge category-status"></span></span>
 			<span class="float-right"><span><i>Date Created</i>:</span> <span class="badge badge-light ticket-created"></span></span>
 		</div>
 		<div class="list-item list-item__action">
@@ -179,10 +180,14 @@
 								item.find('.ticket-service').html(data[k].service);
 							if (!!data[k].description)
 								item.find('.ticket-description').html(data[k].description);
-							if (!!data[k].status)
-								item.find('.ticket-status').html(data[k].status);
-							if (!!data[k].status_badge)
-								item.find('.ticket-status').addClass(data[k].status_badge);
+							if (!!data[k].section)
+								item.find('.section-status').html(data[k].section);
+							if (!!data[k].section_badge)
+								item.find('.section-status').addClass(data[k].section_badge);
+							if (!!data[k].category)
+								item.find('.category-status').html(data[k].category);
+							if (!!data[k].category_badge)
+								item.find('.category-status').addClass(data[k].category_badge);
 							if (!!data[k].date_created)
 								item.find('.ticket-created').html(data[k].date_created);
 							if (!!data[k].id)

@@ -23,6 +23,19 @@ Class Master extends DBConnection {
 			$resp['data'] = $data;
 			return json_encode($resp);
 	}
+	public function load_category_problem(){
+		
+		$qry = $this->conn->query("SELECT * FROM `category_problem` order by `category` asc");
+		$data = array();
+			while($row = $qry->fetch_assoc()){
+				$row['description'] = strip_tags(stripslashes($row['description']));
+				
+				$data[] = $row;
+			}	
+			$resp['status']='success';
+			$resp['data'] = $data;
+			return json_encode($resp);
+	}
 	public function load_service(){
 		
 		$qry = $this->conn->query("SELECT s.*,c.category FROM `services` s inner join `services_category` c on c.id = s.category_id order by s.`service` asc");
@@ -38,7 +51,7 @@ Class Master extends DBConnection {
 	}
 	public function load_tickets(){
 		extract($_POST);
-		$qry = $this->conn->query("SELECT t.*,s.service,c.category FROM `tickets` t inner join `services` s on t.service_id = s.id inner join `services_category` c on c.id = s.category_id ".($this->settings->userdata('login_type') != 1 ? " where t.user_id = '".$this->settings->userdata('id')."' and t.user_created ='user' " : "")." order by date(date_created) desc");
+		$qry = $this->conn->query("SELECT t.*,s.category as section,c.category FROM `tickets` t inner join `services_category` s on t.section_id = s.id inner join `category_problem` c on c.id = t.category_id  order by date(date_created) desc");
 		$data = array();
 			while($row = $qry->fetch_assoc()){
 				$row['description'] = strip_tags(stripslashes($row['description']));
@@ -54,20 +67,8 @@ Class Master extends DBConnection {
 					}
 				}
 				$row['date_created'] = date("Y-m-d h:i",strtotime($row['date_created']));
-				switch ($row['status']) {
-					case 1:
-						$row['status'] ='On-Going';
-						$row['status_badge'] ='badge-info';
-						break;
-					case 2:
-						$row['status'] ='Closed';
-						$row['status_badge'] ='badge-success';
-						break;
-					default:
-						$row['status'] ='Pending';
-						$row['status_badge'] ='badge-dark';
-						break;
-				}
+				$row['section_badge'] ='badge-info';
+				$row['category_badge'] ='badge-success';
 
 				if(empty($search))
 				$data[] = $row;
@@ -153,11 +154,51 @@ Class Master extends DBConnection {
 		return json_encode($resp);
 
 	}
+	function save_category_problem(){
+		extract($_POST);
+		$data = "";
+		foreach($_POST as $k => $v){
+			if(!in_array($k, array('id'))){
+				if($k == 'description') $v = addslashes($v);
+				if(!empty($data)) $data .= " , ";
+				$data .= " {$k} = '{$v}' ";
+			}
+		}
+		$chk = $this->conn->query("SELECT * FROM `category_problem` where category = '{$category}' ".(!empty($id) ? " and id != {$id}" : ""));
+		if($chk->num_rows > 0){
+			$resp['status'] = 'duplicate';
+		}
+		if(empty($id)){
+			$sql = "INSERT INTO `category_problem` set $data ";
+		}else{
+			$sql = "UPDATE `category_problem` set $data where id = {$id}";
+		}
+		$save = $this->conn->query($sql);
+		if($save){
+			$resp['status'] = 'success';
+		}else{
+			$resp['error'] = 'error';
+			$resp['data'] = $sql;
+		}
+		return json_encode($resp);
+
+	}
 	function delete_service_category(){
 		extract($_POST);
 		$delete = $this->conn->query("DELETE FROM `services_category` where id ='$id' ");
 		$delete2 = $this->conn->query("DELETE FROM `services` where category_id ='$id' ");
 		if($delete && $delete2){
+			$resp['status'] = 'success';
+		}else{
+			$resp['status'] = 'error';
+			$resp['error'] = $this->conn->error;
+		}
+		return json_encode($resp);
+	}
+	function delete_category_problem(){
+		extract($_POST);
+		$delete = $this->conn->query("DELETE FROM `category_problem` where id ='$id' ");
+		if($delete){
 			$resp['status'] = 'success';
 		}else{
 			$resp['status'] = 'error';
@@ -380,6 +421,9 @@ switch ($action) {
 	case 'load_service_category':
 		echo $Master->load_service_category();
 	break;
+	case 'load_category_problem':
+		echo $Master->load_category_problem();
+	break;
 	case 'load_service':
 		echo $Master->load_service();
 	break;
@@ -389,9 +433,17 @@ switch ($action) {
 	case 'save_category':
 		echo $Master->save_category();
 	break;
+	case 'save_category_problem':
+		echo $Master->save_category_problem();
+	break;
+	
 	case 'delete_service_category':
 		echo $Master->delete_service_category();
 	break;
+	case 'delete_category_problem':
+		echo $Master->delete_category_problem();
+	break;
+
 	case 'save_service':
 		echo $Master->save_service();
 	break;
@@ -425,6 +477,7 @@ switch ($action) {
 	case 'ticket_update_status':
 		echo $Master->ticket_update_status();
 	break;
+
 	default:
 	// echo $sysset->index();
 	break;

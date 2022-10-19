@@ -1,7 +1,7 @@
 <?php 
 include '../../config.php';
 if(isset($_GET['id'])){
-	$qry = $conn->query("SELECT * FROM `services_category` where id = '{$_GET['id']}'");
+	$qry = $conn->query("SELECT * FROM `category_problem` where id = '{$_GET['id']}'");
 	foreach ($qry->fetch_array() as $key => $value) {
 		if(!is_numeric($key))
 			$$key = $value;
@@ -13,7 +13,7 @@ if(isset($_GET['id'])){
 	<form action="" id="manage-category">
 		<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] :'' ?>">
 		<div class="form-group">
-			<label for="category" class="control-label">Section</label>
+			<label for="category" class="control-label">Category Problem</label>
 			<input type="text" class="form-control form-control-sm" name="category" id="category" value="<?php echo isset($category) ? $category : "" ?>" required>
 		</div>
 		<div class="form-group">
@@ -34,7 +34,7 @@ if(isset($_GET['id'])){
 			}
 			start_loader();
 			$.ajax({
-				url:_base_url_+"classes/Master.php?f=save_category",
+				url:_base_url_+"classes/Master.php?f=save_category_problem",
 				method:"POST",
 				data:$(this).serialize(),
 				dataType:'json',

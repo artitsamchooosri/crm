@@ -1,5 +1,5 @@
 <br>
-<h5 class=""><span class="fa fa-ticket"></span> Ticket</h5>
+<h5 class=""><span class="fa fa-ticket"></span>Problem Topic</h5>
 <hr>
 <?php 
 if(isset($_GET['id'])){
@@ -24,6 +24,30 @@ if(isset($_GET['id'])){
 						<input type="text" class="form-control" required="" name="title" value="<?php echo isset($title) ? $title : "" ?>">
 					</div>
 					<div class="form-group">
+						<label for="section_id" class="control-label">Section :</label>
+						<select class="custom-select custom-select-sm select2" name="section_id" id="section_id" required>
+							<option value="" readonly></option>
+							<?php 
+							$service = $conn->query("SELECT * FROM `services_category` order by `category` asc");
+							while($row = $service->fetch_assoc()):
+							?>
+								<option value="<?php echo $row['id'] ?>" <?php echo isset($section_id) && $section_id == $row['id'] ? "selected" : "" ?>>[<?php echo $row['category'] ?>]</option>
+							<?php endwhile; ?>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="category_id" class="control-label">Category :</label>
+						<select class="custom-select custom-select-sm select2" name="category_id" id="category_id" required>
+							<option value="" readonly></option>
+							<?php 
+							$service = $conn->query("SELECT * FROM `category_problem` order by `category` asc");
+							while($row = $service->fetch_assoc()):
+							?>
+								<option value="<?php echo $row['id'] ?>" <?php echo isset($category_id) && $category_id == $row['id'] ? "selected" : "" ?>>[<?php echo $row['category'] ?>]</option>
+							<?php endwhile; ?>
+						</select>
+					</div>
+					<!-- <div class="form-group">
 						<label for="service_id" class="control-label">Need Support in:</label>
 						<select class="custom-select custom-select-sm select2" name="service_id" id="service_id" required>
 							<option value="" readonly></option>
@@ -34,7 +58,7 @@ if(isset($_GET['id'])){
 								<option value="<?php echo $row['id'] ?>" <?php echo isset($service_id) && $service_id == $row['id'] ? "selected" : "" ?>>[<?php echo $row['category'] ?>] - <?php echo $row['service'] ?> Service</option>
 							<?php endwhile; ?>
 						</select>
-					</div>
+					</div> -->
 					<div class="form-group">
 						<label for="description" class="control-label">Description</label>
 						<textarea class="form-control summernote" required="" name="description"><?php echo isset($description) ? $description : "" ?></textarea>

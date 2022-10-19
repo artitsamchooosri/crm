@@ -1,14 +1,14 @@
 <?php
 $view = isset($_GET['view']) ? $_GET['view'] : 'index';
 switch ($view) {
-	case 'category':
-		include(base_app.'admin/services/category.php');
+	case 'section':
+		include(base_app.'admin/services/section.php');
 		break;
-	case 'services':
-		include(base_app.'admin/services/service_list.php');
+	case 'category_problem':
+		include(base_app.'admin/services/category_problem.php');
 		break;
 	default:
-		include(base_app.'admin/services/service_list.php');
+		include(base_app.'admin/services/category_problem.php');
 		break;
 }
 ?>
