@@ -1,8 +1,6 @@
 <?php require_once('../config.php'); ?>
 <?php 
 ini_set('memory_limit', '256M'); 
-ini_set('display_errors', 1); 
-error_reporting(E_ALL);
 ?>
  <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">

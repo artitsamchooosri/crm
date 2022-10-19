@@ -389,7 +389,7 @@ Class Master extends DBConnection {
 
 		}else{
 			$resp['status'] = 'error';
-			$resp['error'] = $this->conn->error .' : '.$sql;
+			$resp['error'] = $this->conn->error .' : ';
 		}
 		return json_encode($resp);
 	}
