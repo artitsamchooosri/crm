@@ -28,16 +28,20 @@
 	/* List component */
 	.list {
 		width: 100%;
-		
+
 		list-style: none;
-		margin: 0;
+		margin: 0px;
 		padding: 0px;
-		border-radius: 2px;
+		border-radius: 0px;
 	}
 
 	.list .list-item {
 		display: flex;
+		flex-flow: row wrap;
+
 		padding: 5px;
+		margin: 10px;
+		border-radius: 20px;
 	}
 
 	.list .list-item:not(:last-child) {
@@ -46,8 +50,10 @@
 
 	/*list item image wrapper*/
 	.list .list-item__image {
-		flex-shrink: 0;
+		flex: 1 1 initial;
+		align-items: flex-start;
 		height: 80px;
+		width: 80px;
 	}
 
 	.list .list-item__image img {
@@ -58,9 +64,12 @@
 
 	/*list item content*/
 	.list .list-item__content {
+		flex: 1 1 auto;
+		align-items: flex-start;
 		flex-grow: 1;
 		flex-flow: column;
 		padding: 5px;
+		max-width: 600px;
 	}
 
 	.list .list-item__content h4 {
@@ -82,11 +91,23 @@
 	}
 
 	.list .list-item__action {
-		flex-shrink: 0;
+		flex: 1 1 auto;
+		align-items: flex-end;
 		justify-content: flex-end;
-		flex-direction: row-reverse;
-		max-height: 50px;
+		max-height: 40px;
 
+	}
+
+	@media only screen and (max-width: 600px) {
+		.list .list-item__image {
+			height: 0px;
+			width: 0px;
+		}
+
+		.list .list-item__image img {
+			width: 0px;
+			height: 0px;
+		}
 	}
 </style>
 <div class="row">

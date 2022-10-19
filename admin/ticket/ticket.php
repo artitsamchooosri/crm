@@ -1,9 +1,9 @@
 <br>
-<h5 class="">Tickets</h5>
+<h5 class="">List Problem</h5>
 <hr>
 <?php 
 
-$qry = $conn->query("SELECT t.*,s.service,c.category FROM `tickets` t inner join `services` s on t.service_id = s.id inner join `services_category` c on c.id = s.category_id where t.id = ".$_GET['id']);
+$qry = $conn->query("SELECT t.*,s.category as section,c.category FROM `tickets` t inner join `services_category` s on t.section_id = s.id inner join `category_problem` c on c.id = t.category_id where t.id = ".$_GET['id']);
 
 foreach($qry->fetch_array() as $k => $v){
 	if(!is_numeric($qry)){

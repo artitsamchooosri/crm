@@ -1,10 +1,10 @@
 <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="<?php echo base_url ?>customer" class="brand-link text-sm">
+        <!-- <a href="<?php echo base_url ?>customer" class="brand-link text-sm">
         <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 2.5rem;height: 2.5rem;max-height: unset">
         <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
-        </a>
+        </a> -->
         <!-- Sidebar -->
         <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-scrollbar-horizontal-hidden">
           <div class="os-resize-observer-host observed">
@@ -29,38 +29,19 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                    <ul class="nav nav-pills nav-sidebar flex-column nav-flat" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item dropdown">
+<!--                     <li class="nav-item dropdown">
                       <a href="./" class="nav-link nav-home">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                           Dashboard
                         </p>
                       </a>
-                    </li> 
-                    <li class="nav-header">Services</li>
-                    <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>customer?page=quote" class="nav-link nav-quote">
-                        <i class="nav-icon fas fa-th-list"></i>
-                        <p>
-                          Get Quote
-                        </p>
-                      </a>
-                    </li>
-
-                    <li class="nav-header">Ticket</li>
-                    <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>customer/?page=ticket&view=create_ticket" class="nav-link nav-create_ticket">
-                        <i class="nav-icon fas fa-ticket-alt"></i>
-                        <p>
-                          Create New Ticket
-                        </p>
-                      </a>
-                    </li>
+                    </li>  -->
                     <li class="nav-item dropdown">
                       <a href="<?php echo base_url ?>customer/?page=ticket&view=ticket_list" class="nav-link nav-ticket_list">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>
-                          Ticket List
+                          Search Problem
                         </p>
                       </a>
                     </li>
