@@ -1,7 +1,4 @@
 <?php require_once('../config.php'); ?>
-<?php 
-ini_set('memory_limit', '256M'); 
-?>
  <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
