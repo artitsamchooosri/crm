@@ -8,7 +8,7 @@ if(!defined('base_url')) define('base_url','http://localhost/crm/');
 if(!defined('base_app')) define('base_app', str_replace('\\','/',__DIR__).'/' );
 if(!defined('dev_data')) define('dev_data',$dev_data);
 if(!defined('DB_SERVER')) define('DB_SERVER',"localhost");
-if(!defined('DB_USERNAME')) define('DB_USERNAME',"root");
-if(!defined('DB_PASSWORD')) define('DB_PASSWORD',"");
-if(!defined('DB_NAME')) define('DB_NAME',"crm_db");
+if(!defined('DB_USERNAME')) define('DB_USERNAME',"app1_admin");
+if(!defined('DB_PASSWORD')) define('DB_PASSWORD',"Mix@021082SER");
+if(!defined('DB_NAME')) define('DB_NAME',"app1_crm_db");
 ?>
