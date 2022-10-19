@@ -1,7 +1,4 @@
 <?
-ini_set('memory_limit', '256M'); 
-ini_set('display_errors', 1); 
-error_reporting(E_ALL);
 require_once('../config.php');
 Class Master extends DBConnection {
 	private $settings;
@@ -89,8 +86,12 @@ Class Master extends DBConnection {
 
 			$resp['status']='success';
 			$resp['data'] = $data;
-			return json_encode($resp);
+			$json = json_encode($resp);
 
+			if ($json)
+				return $json;
+			else
+				return json_last_error_msg();
 	}
 	public function load_comments(){
 		extract($_POST);
